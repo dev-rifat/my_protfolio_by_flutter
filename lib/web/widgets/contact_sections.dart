@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ContactSection extends StatelessWidget {
@@ -6,206 +7,99 @@ class ContactSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final isMobile = screenWidth < 768;
+    final isMobile = MediaQuery.of(context).size.width < 768;
 
     return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        vertical: 80,
-        horizontal: isMobile ? 24 : 120,
-      ),
-      color: Colors.transparent,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Section Header
-          _buildSectionHeader(),
-          const SizedBox(height: 60),
-
-          // Main Content
-          _buildMainContent(isMobile),
-        ],
+      padding: EdgeInsets.symmetric(vertical: 100, horizontal: isMobile ? 24 : 100),
+      child: AnimationLimiter(
+        child: Column(
+          children: AnimationConfiguration.toStaggeredList(
+            duration: const Duration(milliseconds: 800),
+            childAnimationBuilder: (w) => SlideAnimation(
+              verticalOffset: 50,
+              child: FadeInAnimation(child: w),
+            ),
+            children: [
+              _buildHeader(),
+              const SizedBox(height: 80),
+              isMobile
+                  ? Column(children: [_buildContactInfo(), const SizedBox(height: 50), _buildContactForm()])
+                  : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(child: _buildContactInfo()),
+                  const SizedBox(width: 80),
+                  Expanded(child: _buildContactForm()),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildSectionHeader() {
+  Widget _buildHeader() {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           decoration: BoxDecoration(
-            color: const Color(0xFF1E2A3A),
-            borderRadius: BorderRadius.circular(20),
+            gradient: const LinearGradient(colors: [Color(0xFF1E40AF), Color(0xFF3B82F6)]),
+            borderRadius: BorderRadius.circular(30),
+            boxShadow: [BoxShadow(color: Color(0xFF3B82F6).withOpacity(0.5), blurRadius: 20)],
           ),
-          child: Text(
-            "Contact",
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          child: const Text("Contact", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         ),
         const SizedBox(height: 20),
-        Text(
-          "Get In Touch",
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 36,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          "Have a project in mind or want to discuss a potential collaboration? Feel free to reach out!",
-          textAlign: TextAlign.center,
-          style: GoogleFonts.poppins(
-            color: Colors.white70,
-            fontSize: 18,
-            height: 1.6,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMainContent(bool isMobile) {
-    if (isMobile) {
-      return Column(
-        children: [
-          _buildContactInfo(),
-          const SizedBox(height: 40),
-          _buildContactForm(),
-        ],
-      );
-    }
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Contact Information
-        Expanded(
-          flex: 1,
-          child: _buildContactInfo(),
-        ),
-        const SizedBox(width: 60),
-        // Contact Form
-        Expanded(
-          flex: 1,
-          child: _buildContactForm(),
-        ),
+        const Text("Let's Work Together", style: TextStyle(fontSize: 48, fontWeight: FontWeight.w900, color: Colors.white)),
       ],
     );
   }
 
   Widget _buildContactInfo() {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0E1621),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Contact Information",
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            "Feel free to reach out through any of these channels",
-            style: GoogleFonts.poppins(
-              color: Colors.white70,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 32),
-          _buildContactItem(
-            icon: Icons.email,
-            title: "Email",
-            value: "engr.kamruz@gmail.com",
-            onTap: () {
-              // Handle email tap
-            },
-          ),
-          const SizedBox(height: 20),
-          _buildContactItem(
-            icon: Icons.link,
-            title: "LinkedIn",
-            value: "linkedin.com/in/kamruz-zaman",
-            onTap: () {
-              // Handle LinkedIn tap
-            },
-          ),
-          const SizedBox(height: 20),
-          _buildContactItem(
-            icon: Icons.code,
-            title: "GitHub",
-            value: "github.com/kamruz-zzaman",
-            onTap: () {
-              // Handle GitHub tap
-            },
-          ),
-        ],
+    return _AnimatedCard(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Contact Information", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+            const SizedBox(height: 30),
+            _contactRow(Icons.email, "engr.kamruz@gmail.com"),
+            _contactRow(Icons.link, "linkedin.com/in/kamruz-zaman"),
+            _contactRow(Icons.code, "github.com/kamruz-zzaman"),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildContactItem({
-    required IconData icon,
-    required String title,
-    required String value,
-    required VoidCallback onTap,
-  }) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        onTap: onTap,
-        child: Row(
+  Widget _buildContactForm() {
+    return _AnimatedCard(
+      child: Padding(
+        padding: const EdgeInsets.all(32),
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1A73E8).withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Icon(
-                icon,
-                color: const Color(0xFF1A73E8),
-                size: 20,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    value,
-                    style: GoogleFonts.poppins(
-                      color: Colors.white70,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
+            const Text("Send a Message", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white)),
+            const SizedBox(height: 30),
+            _glowField("Name", Icons.person),
+            _glowField("Email", Icons.email),
+            _glowMessageField(),
+            const SizedBox(height: 30),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1A73E8),
+                  padding: const EdgeInsets.all(18),
+                  elevation: 10,
+                  shadowColor: const Color(0xFF1A73E8).withOpacity(0.6),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                ),
+                child: const Text("Send Message", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
@@ -214,174 +108,89 @@ class ContactSection extends StatelessWidget {
     );
   }
 
-  Widget _buildContactForm() {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      decoration: BoxDecoration(
-        color: const Color(0xFF0E1621),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white12),
+  Widget _glowField(String label, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: TextField(
+        style: const TextStyle(color: Colors.white),
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon, color: Colors.blue),
+          filled: true,
+          fillColor: const Color(0xFF1E293B),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Colors.white12),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16),
+            borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
+          ),
+        ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+
+  Widget _glowMessageField() {
+    return TextField(
+      maxLines: 5,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        hintText: "Your message...",
+        filled: true,
+        fillColor: const Color(0xFF1E293B),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16),
+          borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
+        ),
+      ),
+    );
+  }
+
+  Widget _contactRow(IconData icon, String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Row(
         children: [
-          Text(
-            "Send a Message",
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [Color(0xFF3B82F6), Color(0xFF1E40AF)]),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [BoxShadow(color: Color(0xFF3B82F6).withOpacity(0.4), blurRadius: 15)],
             ),
+            child: Icon(icon, color: Colors.white),
           ),
-          const SizedBox(height: 8),
-          Text(
-            "Fill out the form below and I'll get back to you as soon as possible",
-            style: GoogleFonts.poppins(
-              color: Colors.white70,
-              fontSize: 14,
-            ),
-          ),
-          const SizedBox(height: 32),
-          _buildFormField(
-            label: "Name",
-            hintText: "Your name",
-            icon: Icons.person_outline,
-          ),
-          const SizedBox(height: 20),
-          _buildFormField(
-            label: "Email",
-            hintText: "Your email",
-            icon: Icons.email_outlined,
-          ),
-          const SizedBox(height: 20),
-          _buildMessageField(),
-          const SizedBox(height: 30),
-          _buildSendButton(),
+          const SizedBox(width: 16),
+          Text(text, style: const TextStyle(color: Colors.white70, fontSize: 16)),
         ],
       ),
     );
   }
+}
 
-  Widget _buildFormField({
-    required String label,
-    required String hintText,
-    required IconData icon,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          height: 50,
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E2A3A),
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.white12),
-          ),
-          child: Row(
-            children: [
-              const SizedBox(width: 16),
-              Icon(
-                icon,
-                color: Colors.white54,
-                size: 20,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: TextField(
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: hintText,
-                    hintStyle: GoogleFonts.poppins(
-                      color: Colors.white54,
-                      fontSize: 14,
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.zero,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+class _AnimatedCard extends StatelessWidget {
+  final Widget child;
+  const _AnimatedCard({required this.child});
 
-  Widget _buildMessageField() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Message",
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        decoration: BoxDecoration(
+          color: const Color(0xFF0E1621),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.white10),
+          boxShadow: [
+            BoxShadow(color: Colors.black45, blurRadius: 30, offset: const Offset(0, 15)),
+            BoxShadow(color: const Color(0xFF3B82F6).withOpacity(0.2), blurRadius: 40),
+          ],
         ),
-        const SizedBox(height: 8),
-        Container(
-          height: 120,
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E2A3A),
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.white12),
-          ),
-          child: TextField(
-            maxLines: 5,
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 14,
-            ),
-            decoration: InputDecoration(
-              hintText: "Your message",
-              hintStyle: GoogleFonts.poppins(
-                color: Colors.white54,
-                fontSize: 14,
-              ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.all(16),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSendButton() {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {
-          // Handle send message
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF1A73E8),
-          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        child: Text(
-          "Send Message",
-          style: GoogleFonts.poppins(
-            color: Colors.white,
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
+        child: child,
       ),
     );
   }

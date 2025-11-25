@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../global/widgets.dart';
+
 class WorkExperienceSection extends StatelessWidget {
   const WorkExperienceSection({super.key});
 
@@ -48,13 +50,10 @@ class WorkExperienceSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                "Work Experience",
-                style: GoogleFonts.poppins(
-                  fontSize: isMobile ? 26 : isTablet ? 32 : 38,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+
+              CustomButton(
+                text: 'Work Experience',
+                onPressed: () {},
               ),
               const SizedBox(height: 40),
 

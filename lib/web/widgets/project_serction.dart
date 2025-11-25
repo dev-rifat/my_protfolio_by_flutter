@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../global/widgets.dart';
+
 class ProjectsSection extends StatelessWidget {
   const ProjectsSection({super.key});
 
@@ -107,19 +109,10 @@ class ProjectsSection extends StatelessWidget {
   Widget _sectionHeader(double width) {
     return Column(
       children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 14),
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E2A3A),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Text(
-            "Projects",
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize: 14,
-            ),
-          ),
+
+        CustomButton(
+          text: 'Projects',
+          onPressed: () {},
         ),
         const SizedBox(height: 12),
         Text(

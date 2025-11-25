@@ -23,7 +23,7 @@ class HeaderSection extends StatelessWidget {
         children: [
           /// TITLE
           Text(
-            "Portfolio",
+            "Rifat",
             style: GoogleFonts.poppins(
               color: Colors.white,
               fontSize: isMobile ? 18 : 22,

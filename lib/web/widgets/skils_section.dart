@@ -132,6 +132,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../global/widgets.dart';
+
 class SkillsSection extends StatelessWidget {
   const SkillsSection({super.key});
 
@@ -145,21 +147,10 @@ class SkillsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           // Title
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-            decoration: BoxDecoration(
-              color: Colors.blue.shade600,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              "Skills",
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
+        CustomButton(
+        text: 'Skills',
+        onPressed: () {},
+      ),
           const SizedBox(height: 20),
 
           Text(
