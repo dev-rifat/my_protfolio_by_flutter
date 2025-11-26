@@ -143,9 +143,18 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
           "Apps Developer",
           style: GoogleFonts.poppins(
             color: Colors.blueAccent,
-            fontSize: isMobile ? 38 : isTablet ? 52 : 68,
+            fontSize: isMobile ? 38 : isTablet ? 52 : 66,
             fontWeight: FontWeight.w800,
             letterSpacing: 1.5,
+          ),
+        ),
+        const SizedBox(height: 12),
+
+        Text(
+          "I develop modern, scalable Flutter applications for mobile and web, following clean architecture principles, with robust state management and seamless user experiences",
+          style: GoogleFonts.poppins(
+            color: Colors.grey,
+            fontSize: 16,
           ),
         ),
         const SizedBox(height: 40),
@@ -175,7 +184,7 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: BorderRadius.circular(3),
-          border: border ? Border.all(color: Colors.blueAccent, width: .7) : null,
+          border: border ? Border.all(color: Colors.blueAccent, width: .6) : null,
           boxShadow: [
             // Shadow for filled button (Got a project?)
             // if (!border) ...[
@@ -207,7 +216,25 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
             // ],
           ],
         ),
-        child: Text(
+        child: !border?
+
+        Wrap(
+
+          children: [
+            Text(
+              text,
+              style: GoogleFonts.poppins(
+                color: border ? Colors.blueAccent : const Color(0xFF020817),
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.8,
+              ),
+            ),
+            SizedBox(width: 8,),
+
+            Icon(Icons.arrow_forward_outlined,size: 18,)
+          ],
+        ): Text(
           text,
           style: GoogleFonts.poppins(
             color: border ? Colors.blueAccent : const Color(0xFF020817),
