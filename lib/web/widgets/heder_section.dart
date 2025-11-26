@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
+// ---------------- HeaderSection ----------------
 
 class HeaderSection extends StatelessWidget {
-  const HeaderSection({super.key});
+  final Function(String) onMenuTap;
+  const HeaderSection({super.key, required this.onMenuTap});
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +34,10 @@ class HeaderSection extends StatelessWidget {
           if (!isMobile)
             Row(
               children: [
-                menuItem("Home"),
-                menuItem("About"),
-                menuItem("Projects"),
-                menuItem("Contact"),
+                menuItem("About", onMenuTap),
+                menuItem("Skills", onMenuTap),
+                menuItem("Projects", onMenuTap),
+                menuItem("Contact", onMenuTap),
               ],
             ),
 
@@ -59,28 +58,17 @@ class HeaderSection extends StatelessWidget {
 }
 
 /// Desktop menu item
-Widget menuItem(String title) {
+Widget menuItem(String title, Function(String) onTap) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 14),
-    child: Text(
-      title,
-      style: GoogleFonts.poppins(
-        color: Colors.white70,
-        fontSize: 16,
-      ),
-    ),
-  );
-}
-
-/// Drawer menu item
-Widget drawerMenuItem(String title) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 12),
-    child: Text(
-      title,
-      style: GoogleFonts.poppins(
-        fontSize: 18,
-        color: Colors.white
+    child: InkWell(
+      onTap: () => onTap(title),
+      child: Text(
+        title,
+        style: GoogleFonts.poppins(
+          color: Colors.white70,
+          fontSize: 16,
+        ),
       ),
     ),
   );

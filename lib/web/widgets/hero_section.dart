@@ -120,9 +120,9 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
       crossAxisAlignment: isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
         Text(
-          "Hello,",
+          "Hi,",
           style: GoogleFonts.poppins(
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.white.withValues(alpha: 0.9),
             fontSize: isMobile ? 24 : isTablet ? 32 : 38,
             fontWeight: FontWeight.w500,
             letterSpacing: 1.2,
@@ -155,7 +155,7 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
           runSpacing: 16,
           alignment: isMobile ? WrapAlignment.center : WrapAlignment.start,
           children: [
-            _buildButton("Got a project?", Colors.blueAccent, isMobile),
+            _buildButton("View My Work", Colors.blueAccent, isMobile),
             _buildButton("My resume", Colors.transparent, isMobile, border: true),
           ],
         ),
@@ -169,50 +169,50 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.symmetric(
-          horizontal: isMobile ? 24 : 34,
-          vertical: isMobile ? 14 : 18,
+          horizontal: isMobile ? 24 : 18,
+          vertical: isMobile ? 13 : 13,
         ),
         decoration: BoxDecoration(
           color: bgColor,
-          borderRadius: BorderRadius.circular(40),
-          border: border ? Border.all(color: Colors.blueAccent, width: 3) : null,
+          borderRadius: BorderRadius.circular(3),
+          border: border ? Border.all(color: Colors.blueAccent, width: .7) : null,
           boxShadow: [
             // Shadow for filled button (Got a project?)
-            if (!border) ...[
-              BoxShadow(
-                color: Colors.blueAccent.withOpacity(0.6),
-                blurRadius: 20,
-                spreadRadius: 2,
-                offset: const Offset(0, 8),
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 5),
-              ),
-            ],
+            // if (!border) ...[
+            //   BoxShadow(
+            //     color: Colors.blueAccent.withValues(alpha: 0.6),
+            //     blurRadius: 20,
+            //     spreadRadius: 2,
+            //     offset: const Offset(0, 8),
+            //   ),
+            //   BoxShadow(
+            //     color: Colors.black.withValues(alpha: 0.3),
+            //     blurRadius: 15,
+            //     offset: const Offset(0, 5),
+            //   ),
+            // ],
             // Shadow for outline button (My resume)
-            if (border) ...[
-              BoxShadow(
-                color: Colors.blueAccent.withOpacity(0.4),
-                blurRadius: 15,
-                spreadRadius: 1,
-                offset: const Offset(0, 5),
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 10,
-                offset: const Offset(0, 3),
-              ),
-            ],
+            // if (border) ...[
+            //   BoxShadow(
+            //     color: Colors.blueAccent.withValues(alpha: 0.4),
+            //     blurRadius: 15,
+            //     spreadRadius: 1,
+            //     offset: const Offset(0, 5),
+            //   ),
+            //   BoxShadow(
+            //     color: Colors.black.withValues(alpha: 0.2),
+            //     blurRadius: 10,
+            //     offset: const Offset(0, 3),
+            //   ),
+            // ],
           ],
         ),
         child: Text(
           text,
           style: GoogleFonts.poppins(
-            color: border ? Colors.blueAccent : Colors.white,
-            fontSize: isMobile ? 16 : 18,
-            fontWeight: FontWeight.w600,
+            color: border ? Colors.blueAccent : const Color(0xFF020817),
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
             letterSpacing: 0.8,
           ),
         ),
@@ -237,7 +237,7 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.blueAccent.withOpacity(0.2),
+            color: Colors.blueAccent.withValues(alpha: 0.2),
             blurRadius: 40,
             spreadRadius: 10,
           ),
