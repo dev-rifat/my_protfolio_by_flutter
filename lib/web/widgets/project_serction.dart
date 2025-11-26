@@ -33,6 +33,21 @@ class ProjectsSection extends StatelessWidget {
           _buildHeader(width),
           const SizedBox(height: 50),
           _buildProjectLayout(width),
+          const SizedBox(height: 50),
+          TextButton(
+
+            onPressed: (){}, child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("View all projects",style: TextStyle(color: Colors.blueAccent),),
+                SizedBox(width: 8,),
+                Icon(Icons.arrow_forward_outlined,color: Colors.blueAccent,)
+              ],
+            ),
+
+
+          )
+
         ],
       ),
     );

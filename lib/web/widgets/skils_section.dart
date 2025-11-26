@@ -50,7 +50,7 @@ class _SkillsSectionState extends State<SkillsSection> {
           colors: [
             const Color(0xFF020817),
             const Color(0xFF020817),
-            const Color(0xFF052465),
+            const Color(0xFF031847),
           ],
         ),
       ),
@@ -114,6 +114,7 @@ class _SkillsSectionState extends State<SkillsSection> {
                     "BLoC Pattern",
                     "MVC Architecture",
                     "MVVM Architecture",
+                    "Clean Architecture",
                     "Dependency Injection",
                   ],
                   color: Colors.blueAccent,
@@ -128,6 +129,7 @@ class _SkillsSectionState extends State<SkillsSection> {
                     "Real-time Data Handling",
                     "Firebase Auth",
                     "Firestore",
+                    "Live chat",
                   ],
                   color: Colors.blueAccent,
                   delay: 200,
@@ -267,18 +269,14 @@ class _SkillCategoryState extends State<SkillCategory>
           width: 340,
           padding: const EdgeInsets.all(28),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [const Color(0xFF1E293B), const Color(0xFF334155)],
-            ),
+           color: Color(0xff0e1628),
             borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
                 color: widget.color.withOpacity(_isHovered ? 0.4 : 0.2),
-                blurRadius: _isHovered ? 25 : 15,
+                blurRadius: _isHovered ? 25 : 0,
                 spreadRadius: _isHovered ? 2 : 1,
-                offset: Offset(0, _isHovered ? 8 : 4),
+                offset: Offset(0, _isHovered ? 8 : 0),
               ),
               BoxShadow(
                 color: Colors.black.withOpacity(0.3),
@@ -418,14 +416,15 @@ class __SkillChipState extends State<_SkillChip>
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(
+
             gradient: _isHovered
                 ? LinearGradient(
                     colors: [widget.color, widget.color.withOpacity(0.8)],
                   )
                 : LinearGradient(
                     colors: [
-                      widget.color.withOpacity(0.7),
-                      widget.color.withOpacity(0.5),
+                      widget.color.withValues(alpha: 0.2),
+                      widget.color.withValues(alpha: 0.4),
                     ],
                   ),
             borderRadius: BorderRadius.circular(8),
