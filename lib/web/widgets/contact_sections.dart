@@ -1,22 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import 'package:my_protfolio/utils/images.dart';
 import '../../global/utils/link_url_service.dart';
 import '../../global/widgets.dart';
+import '../../utils/app_string.dart';
 
 class ContactSection extends StatelessWidget {
-  const ContactSection({super.key});
+  ContactSection({super.key});
 
-  void showCopySnackBar(BuildContext context) {
+  void copyToClipboard(BuildContext context, String value) {
+    Clipboard.setData(ClipboardData(text: value));
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text("Copied!", style: TextStyle(color: Colors.white)),
+        content: Text(
+          ContactString.snackCopiedText,
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.black87,
-        duration: Duration(milliseconds: 700),
+        duration: Duration(milliseconds: 600),
       ),
     );
   }
+
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _name = TextEditingController();
+  final TextEditingController _body = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +55,7 @@ class ContactSection extends StatelessWidget {
             ),
             children: [
               _buildHeader(width),
+
               const SizedBox(height: 40),
 
               isMobile
@@ -70,8 +81,12 @@ class ContactSection extends StatelessWidget {
     );
   }
 
+  // -----------------------------
+  // HEADER
+  // -----------------------------
+
   Widget _buildHeader(double width) {
-    double titleSize = width < 500
+    final double titleSize = width < 500
         ? 26
         : width < 900
         ? 34
@@ -79,10 +94,10 @@ class ContactSection extends StatelessWidget {
 
     return Column(
       children: [
-        CustomButton(text: 'Get Touch', onPressed: () {}),
+        CustomButton(text: ContactString.titleBadge, onPressed: () {}),
         const SizedBox(height: 16),
         Text(
-          "Let's Work Together",
+          ContactString.titleMain,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: titleSize,
@@ -94,6 +109,10 @@ class ContactSection extends StatelessWidget {
     );
   }
 
+  // -----------------------------
+  // CONTACT INFO BOX
+  // -----------------------------
+
   Widget _buildContactInfo(bool isMobile, BuildContext context) {
     return _AnimatedCard(
       child: Padding(
@@ -102,7 +121,7 @@ class ContactSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Contact Information",
+              ContactString.contactHeader,
               style: TextStyle(
                 fontSize: isMobile ? 20 : 22,
                 fontWeight: FontWeight.bold,
@@ -111,30 +130,37 @@ class ContactSection extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            _contactRow(Icons.email, "lutfurrh850@gmail.com", context, () {}),
             _contactRow(
-              Icons.link,
-              "linkedin.com/in/lutfar-rahman-rifat-1a769323a",
-              context,
-              () {
-                openCustomUrl("https://www.linkedin.com/in/lutfar-rahman-rifat-1a769323a");
+              icon: AppImages.email,
+              text: ContactString.emailText,
+              context: context,
+              onAction: () async {
+                await openCustomUrl(ContactString.emailText);
               },
             ),
+
             _contactRow(
-              Icons.code,
-              "https://github.com/dev-rifat",
-              context,
-              () {
+              icon: AppImages.linkdin,
+              text: ContactString.linkedinText,
+              context: context,
+              onAction: () => openCustomUrl(ContactString.linkedinUrl),
+            ),
 
-                openCustomUrl("https://github.com/dev-rifat");
-
-              },
+            _contactRow(
+              icon: AppImages.git,
+              text: ContactString.githubText,
+              context: context,
+              onAction: () => openCustomUrl(ContactString.githubUrl),
             ),
           ],
         ),
       ),
     );
   }
+
+  // -----------------------------
+  // CONTACT FORM
+  // -----------------------------
 
   Widget _buildContactForm(bool isMobile) {
     return _AnimatedCard(
@@ -144,23 +170,32 @@ class ContactSection extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Send a Message",
+              ContactString.sendMessageHeader,
               style: TextStyle(
                 fontSize: isMobile ? 20 : 22,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
               ),
             ),
+
             const SizedBox(height: 20),
+
             _glowField("Name", Icons.person),
-            _glowField("Email", Icons.email),
+            _glowEmailField("Email", Icons.email),
             _glowMessageField(),
+
             const SizedBox(height: 20),
 
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await openEmail(
+                    _email.text,
+                    body: _body.text,
+                    subject: _name.text,
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xFF1A73E8),
                   padding: const EdgeInsets.all(16),
@@ -181,28 +216,43 @@ class ContactSection extends StatelessWidget {
     );
   }
 
+  // -----------------------------
+  // FORM FIELDS
+  // -----------------------------
+
   Widget _glowField(String label, IconData icon) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
         style: const TextStyle(color: Colors.white),
+        controller: _name,
         decoration: InputDecoration(
           labelText: label,
           prefixIcon: Icon(icon, color: Colors.blue),
           filled: true,
           fillColor: const Color(0xFF1E293B),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: const BorderSide(color: Colors.white12),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
-          ),
+          border: _border(),
+          enabledBorder: _border(color: Colors.white12),
+          focusedBorder: _border(color: const Color(0xFF3B82F6), width: 2),
+        ),
+      ),
+    );
+  }
+
+  Widget _glowEmailField(String label, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: TextField(
+        style: const TextStyle(color: Colors.white),
+        controller: _email,
+        decoration: InputDecoration(
+          labelText: label,
+          prefixIcon: Icon(icon, color: Colors.blue),
+          filled: true,
+          fillColor: const Color(0xFF1E293B),
+          border: _border(),
+          enabledBorder: _border(color: Colors.white12),
+          focusedBorder: _border(color: const Color(0xFF3B82F6), width: 2),
         ),
       ),
     );
@@ -212,49 +262,56 @@ class ContactSection extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
+        controller: _body,
         maxLines: 4,
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          hintText: "Your message...",
-          hintStyle: TextStyle(color: Colors.white70),
+          hintText: ContactString.messagePlaceholder,
+          hintStyle: const TextStyle(color: Colors.white70),
           filled: true,
           fillColor: const Color(0xFF1E293B),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: BorderSide.none,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(4),
-            borderSide: const BorderSide(color: Color(0xFF3B82F6), width: 2),
-          ),
+          border: _border(),
+          focusedBorder: _border(color: const Color(0xFF3B82F6), width: 2),
         ),
       ),
     );
   }
 
-  Widget _contactRow(
-    IconData icon,
-    String text,
-    BuildContext context,
-    Function onAction,
-  ) {
+  OutlineInputBorder _border({
+    Color color = Colors.transparent,
+    double width = 1,
+  }) {
+    return OutlineInputBorder(
+      borderRadius: BorderRadius.circular(4),
+      borderSide: BorderSide(color: color, width: width),
+    );
+  }
+
+  // -----------------------------
+  // CONTACT ITEM ROW
+  // -----------------------------
+
+  Widget _contactRow({
+    required String icon,
+    required String text,
+    required BuildContext context,
+    required Function onAction,
+  }) {
     return InkWell(
       onTap: () => onAction(),
-
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 0),
         child: Row(
           children: [
             Container(
+              width: 46,
+              height: 46,
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                // gradient: const LinearGradient(
-                //   colors: [Color(0xFF3B82F6), Color(0xFF1E40AF)],
-                // ),
-                color: Colors.blueAccent,
+                color: Colors.transparent,
                 borderRadius: BorderRadius.circular(3),
+                image: DecorationImage(image: AssetImage(icon)),
               ),
-              child: Icon(icon, color: Colors.white, size: 20),
             ),
 
             const SizedBox(width: 14),
@@ -267,22 +324,9 @@ class ContactSection extends StatelessWidget {
               ),
             ),
 
-            // Copy Button
             IconButton(
               icon: const Icon(Icons.copy, color: Colors.white70, size: 18),
-              onPressed: () {
-                Clipboard.setData(ClipboardData(text: text));
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    backgroundColor: Colors.black87,
-                    duration: Duration(milliseconds: 600),
-                    content: Text(
-                      "Copied!",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                );
-              },
+              onPressed: () => copyToClipboard(context, text),
             ),
           ],
         ),
@@ -290,6 +334,10 @@ class ContactSection extends StatelessWidget {
     );
   }
 }
+
+// -----------------------------
+// WRAPPER CARD ANIMATION
+// -----------------------------
 
 class _AnimatedCard extends StatelessWidget {
   final Widget child;
@@ -307,7 +355,7 @@ class _AnimatedCard extends StatelessWidget {
           border: Border.all(color: Colors.white10),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.4),
+              color: Colors.black.withValues(alpha: 0.4),
               blurRadius: 20,
               offset: const Offset(0, 10),
             ),

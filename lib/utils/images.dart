@@ -13,5 +13,8 @@ static String playstore1="assets/images/playstore.png";
 static String appstore="assets/images/appstore.jpg";
 static String appstore1="assets/images/appstore1.png";
 static String me="assets/images/me.jpeg";
+static String email="assets/images/email.png";
+static String git="assets/images/git.png";
+static String linkdin="assets/images/linkdin.png";
 
 }

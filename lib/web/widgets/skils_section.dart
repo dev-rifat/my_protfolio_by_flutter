@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../global/widgets.dart';
+import '../../utils/app_string.dart';
 
 class SkillsSection extends StatefulWidget {
   const SkillsSection({super.key});
@@ -21,14 +21,11 @@ class _SkillsSectionState extends State<SkillsSection> {
   }
 
   void _onScroll() {
-    if (_scrollController.offset > 100 && !_isScrolled) {
-      setState(() {
-        _isScrolled = true;
-      });
-    } else if (_scrollController.offset <= 100 && _isScrolled) {
-      setState(() {
-        _isScrolled = false;
-      });
+    final offset = _scrollController.offset;
+    final newValue = offset > 100;
+
+    if (newValue != _isScrolled) {
+      setState(() => _isScrolled = newValue);
     }
   }
 
@@ -44,37 +41,31 @@ class _SkillsSectionState extends State<SkillsSection> {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [
-            const Color(0xFF020817),
-            const Color(0xFF020817),
-            const Color(0xFF031847),
-          ],
+          colors: [Color(0xFF020817), Color(0xFF020817), Color(0xFF031847)],
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Animated Title Button
           AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             transform: Matrix4.translationValues(0, _isScrolled ? -20 : 0, 0),
-            child: CustomButton(text: 'Technical Skills', onPressed: () {}),
+            child: CustomButton(text: SkillsStrings.title, onPressed: () {}),
           ),
-          SizedBox(height: 40),
-          // Subtitle
+
+          const SizedBox(height: 40),
+
           AnimatedOpacity(
             duration: const Duration(milliseconds: 1000),
             opacity: _isScrolled ? 1 : 0,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 800),
-              color: Color(0xFF020817),
-
               transform: Matrix4.translationValues(0, _isScrolled ? 0 : 40, 0),
               child: Text(
-                "Here are the technologies and tools I work with to build high-performance mobile applications.",
+                SkillsStrings.subtitle,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   color: Colors.white70,
@@ -85,93 +76,48 @@ class _SkillsSectionState extends State<SkillsSection> {
             ),
           ),
 
-          // Skills Grid
+          const SizedBox(height: 40),
+
           SingleChildScrollView(
             controller: _scrollController,
             child: Wrap(
               alignment: WrapAlignment.center,
               spacing: 30,
               runSpacing: 30,
-              children: const [
+              children: [
                 SkillCategory(
-                  title: "Mobile Development",
-                  skills: [
-                    "Flutter & Dart",
-                    "Responsive UI Development",
-                    "Pixel-perfect UI",
-                    "Clean Architecture",
-                    "Reusable Components",
-                    "App Store Publishing",
-                    "Play Store Publishing",
-                  ],
+                  title: SkillsStrings.categoryMobile,
+                  skills: SkillsStrings.mobileSkills,
                   color: Colors.blueAccent,
                   delay: 0,
                 ),
                 SkillCategory(
-                  title: "State Management",
-                  skills: [
-                    "GetX",
-                    "BLoC Pattern",
-                    "MVC Architecture",
-                    "MVVM Architecture",
-                    "Clean Architecture",
-                    "Dependency Injection",
-                  ],
+                  title: SkillsStrings.categoryState,
+                  skills: SkillsStrings.stateSkills,
                   color: Colors.blueAccent,
                   delay: 100,
                 ),
                 SkillCategory(
-                  title: "APIs & Backend",
-                  skills: [
-                    "REST APIs",
-                    "GraphQL & Subscriptions",
-                    "WebSocket",
-                    "Real-time Data Handling",
-                    "Firebase Auth",
-                    "Firestore",
-                    "Live chat",
-                  ],
+                  title: SkillsStrings.categoryApi,
+                  skills: SkillsStrings.apiSkills,
                   color: Colors.blueAccent,
                   delay: 200,
                 ),
                 SkillCategory(
-                  title: "Features & Modules",
-                  skills: [
-                    "Chat Modules",
-                    "Payment Gateway Integration",
-                    "Push Notification Systems",
-                    "Offline Storage (Hive)",
-                    "HRM Solutions",
-                    "E-commerce Features",
-                    "LMS Development",
-                  ],
+                  title: SkillsStrings.categoryFeatures,
+                  skills: SkillsStrings.featureSkills,
                   color: Colors.blueAccent,
                   delay: 300,
                 ),
                 SkillCategory(
-                  title: "Push Notification",
-                  skills: [
-                    "Firebase Cloud Messaging (FCM)",
-                    "Pushy",
-                    "Apple Push Notification (APNs)",
-                    "Notification Systems",
-                  ],
+                  title: SkillsStrings.categoryPush,
+                  skills: SkillsStrings.pushSkills,
                   color: Colors.blueAccent,
                   delay: 400,
                 ),
                 SkillCategory(
-                  title: "Tools & DevOps",
-                  skills: [
-                    "Git & GitHub",
-                    "GitLab",
-                    "GitHub Actions CI/CD",
-                    "Firebase App Distribution",
-                    "Jira",
-                    "Zen Hub",
-                    "Trello",
-                    "Slack",
-                    "MS Teams",
-                  ],
+                  title: SkillsStrings.categoryTools,
+                  skills: SkillsStrings.toolSkills,
                   color: Colors.blueAccent,
                   delay: 500,
                 ),
@@ -269,7 +215,7 @@ class _SkillCategoryState extends State<SkillCategory>
           width: 340,
           padding: const EdgeInsets.all(28),
           decoration: BoxDecoration(
-           color: Color(0xff0e1628),
+            color: Color(0xff0e1628),
             borderRadius: BorderRadius.circular(3),
             boxShadow: [
               BoxShadow(
@@ -415,26 +361,25 @@ class __SkillChipState extends State<_SkillChip>
         },
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           decoration: BoxDecoration(
-
             gradient: _isHovered
                 ? LinearGradient(
-                    colors: [widget.color, widget.color.withOpacity(0.8)],
+                    colors: [widget.color, widget.color.withValues(alpha: 0.8)],
                   )
                 : LinearGradient(
                     colors: [
-                      widget.color.withValues(alpha: 0.1),
-                      widget.color.withValues(alpha: 0.1),
-                      widget.color.withValues(alpha: 0.1),
-                      widget.color.withValues(alpha: 0.1),
+                      widget.color.withValues(alpha: 0.4),
+                      widget.color.withValues(alpha: 0.4),
+                      widget.color.withValues(alpha: 0.4),
+                      widget.color.withValues(alpha: 0.4),
                     ],
                   ),
-            borderRadius: BorderRadius.circular(3),
+            borderRadius: BorderRadius.circular(60),
             boxShadow: [
               if (_isHovered)
                 BoxShadow(
-                  color: widget.color.withOpacity(0.5),
+                  color: widget.color.withValues(alpha: 0.5),
                   blurRadius: 10,
                   spreadRadius: 2,
                   offset: const Offset(0, 3),
@@ -445,7 +390,7 @@ class __SkillChipState extends State<_SkillChip>
             widget.skill,
             style: GoogleFonts.poppins(
               color: Colors.white,
-              fontSize: 14,
+              fontSize: 12,
               fontWeight: FontWeight.w500,
             ),
           ),

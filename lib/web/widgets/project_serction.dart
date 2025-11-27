@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../global/utils/link_url_service.dart';
 import '../../global/widgets.dart';
+import '../../utils/app_string.dart';
 import '../../utils/images.dart';
 
 class ProjectsSection extends StatelessWidget {
@@ -114,22 +115,9 @@ class ProjectsSection extends StatelessWidget {
     if (width >= 700) return _buildGrid(1, width); // Tablet / iPad portrait
     return _buildGrid(4, width); // Phones
 
-    // Tablet (700–1024)
-    if (width < 1100) {
-      return _buildGrid(2, width);
-    }
-
-    // Small laptop (1100–1500)
-    if (width < 1500) {
-      return _buildGrid(3, width);
-    }
-
-    // Large desktop (1500+)
-    return _buildGrid(4, width);
   }
 
   double _getAspectRatio(double width) {
-    print("Screen width: $width");
 
     // ---------- 4K & ULTRAWIDE (2560px – 4000px+) ----------
     if (width >= 3000) return 1.35; // 4K large screens
@@ -191,86 +179,7 @@ class ProjectsSection extends StatelessWidget {
     );
   }
 
-  // SAMPLE DATA
-  static final projects = [
-    Project(
-      title: "PayRun",
-      viewDetails: "https://payrun.app/",
-      appstoreUrl: "https://apps.apple.com/us/app/payrun/id6483939439",
-      playStoreUrl:
-          "https://play.google.com/store/apps/details?id=com.gainhq.payrun&hl=en",
-      description:
-          "Complete HR & payroll management app with employee tracking, payroll automation and admin interface.",
-      imageUrl: AppImages.payrun,
-      tags: [
-        "Flutter",
-        "Graphql",
-        "aws",
-        "graphql subscription",
-        "Firebase",
-        "Pushy",
-        "Apns Server",
-        "Hive",
-        "Local notification",
-        "Websocket",
-      ],
-    ),
-    Project(
-      title: "EasyDesk",
-      viewDetails: "https://easydesk.app/",
-      appstoreUrl:
-          "https://apps.apple.com/us/app/easydesk-support/id6738735433",
-      playStoreUrl:
-          "https://play.google.com/store/apps/details?id=com.gainhq.easydesk&hl=en",
-      description:
-          "EasyDesk is more than just a helpdesk software. It is a complete online customer...",
-      imageUrl: AppImages.easyDesk,
-      tags: [
-        "Flutter",
-        "Graphql",
-        "aws",
-        "graphql subscription",
-        "Pushy",
-        "Apns Server",
-        "Local notification",
-      ],
-    ),
-    Project(
-      title: "LMS Mobile",
-      viewDetails:           "https://play.google.com/store/apps/details?id=com.data_app_lms.lms_mobile_android_ios&hl=en",
 
-      playStoreUrl:
-          "https://play.google.com/store/apps/details?id=com.data_app_lms.lms_mobile_android_ios&hl=en",
-
-      description:
-          "Full-featured LMS for students with offline access, quizzes & video learning...",
-      imageUrl: AppImages.rise,
-      tags: ["Flutter", "REST API", "GetX", "SQLite"],
-    ),
-
-    Project(
-      title: "Mango Cart",
-      viewDetails:
-          "https://play.google.com/store/apps/details?id=com.rifatalhasan.mango_app_user&hl=en", playStoreUrl:
-          "https://play.google.com/store/apps/details?id=com.rifatalhasan.mango_app_user&hl=en",
-
-      description:
-          "Mango lets you order fresh mangoes and premium beef from trusted local suppliers—fast, easy, and delivered to your door...",
-      imageUrl: AppImages.mangoCart,
-      tags: ["Flutter", "REST API", "GetX", "SQLite", "WebSocket"],
-    ),
-    Project(
-      title: "Mango Cart Distributor",
-      viewDetails:
-          "https://play.google.com/store/apps/details?id=com.rifatalhasan.mango_app_admin&hl=en",playStoreUrl:
-          "https://play.google.com/store/apps/details?id=com.rifatalhasan.mango_app_admin&hl=en",
-
-      description:
-          "Seasonal mangoes and premium beef, delivered fast from trusted local suppliers...",
-      imageUrl: AppImages.mangoCart,
-      tags: ["Flutter", "REST API", "GetX", "SQLite", "WebSocket"],
-    ),
-  ];
 }
 
 // ===============================================
@@ -333,7 +242,7 @@ class ProjectCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.25),
+            color: Colors.black.withValues(alpha: 0.25),
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),

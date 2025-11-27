@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:my_protfolio/utils/images.dart';
-import 'package:url_launcher/url_launcher.dart';
-
 import '../../global/utils/link_url_service.dart';
+import '../../utils/app_string.dart';
 
 class HeroSection extends StatefulWidget {
   final Function(String) onMenuTap;
@@ -56,7 +55,6 @@ class _HeroSectionState extends State<HeroSection>
 
     bool isMobile = width < 600;
     bool isTablet = width >= 600 && width < 1100;
-    bool isDesktop = width >= 1100;
 
     return AnimatedBuilder(
       animation: _controller,
@@ -82,40 +80,35 @@ class _HeroSectionState extends State<HeroSection>
                       offset: Offset(0, _slideAnimation.value),
                       child: Opacity(
                         opacity: _fadeAnimation.value,
-                        child: _leftText(isMobile, isTablet, isDesktop),
+                        child: _leftText(isMobile, isTablet),
                       ),
                     ),
                     const SizedBox(height: 40),
                     Opacity(
                       opacity: _fadeAnimation.value,
-                      child: _rightImage(isMobile, isTablet, isDesktop),
+                      child: _rightImage(isMobile, isTablet),
                     ),
                   ],
                 )
               : Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: isTablet
-                      ? CrossAxisAlignment.center
-                      : CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: isTablet ? 5 : 6,
                       child: Transform.translate(
                         offset: Offset(-_slideAnimation.value, 0),
                         child: Opacity(
                           opacity: _fadeAnimation.value,
-                          child: _leftText(isMobile, isTablet, isDesktop),
+                          child: _leftText(isMobile, isTablet),
                         ),
                       ),
                     ),
                     const SizedBox(width: 40),
                     Expanded(
-                      flex: isTablet ? 4 : 5,
                       child: Transform.translate(
                         offset: Offset(_slideAnimation.value, 0),
                         child: Opacity(
                           opacity: _fadeAnimation.value,
-                          child: _rightImage(isMobile, isTablet, isDesktop),
+                          child: _rightImage(isMobile, isTablet),
                         ),
                       ),
                     ),
@@ -126,14 +119,14 @@ class _HeroSectionState extends State<HeroSection>
     );
   }
 
-  Widget _leftText(bool isMobile, bool isTablet, bool isDesktop) {
+  Widget _leftText(bool isMobile, bool isTablet) {
     return Column(
       crossAxisAlignment: isMobile
           ? CrossAxisAlignment.center
           : CrossAxisAlignment.start,
       children: [
         Text(
-          "Hi,",
+          HeroStrings.hi,
           style: GoogleFonts.poppins(
             color: Colors.white.withValues(alpha: 0.9),
             fontSize: isMobile
@@ -142,12 +135,13 @@ class _HeroSectionState extends State<HeroSection>
                 ? 32
                 : 38,
             fontWeight: FontWeight.w500,
-            letterSpacing: 1.2,
           ),
         ),
+
         const SizedBox(height: 8),
+
         Text(
-          "I'm Rifat",
+          HeroStrings.name,
           style: GoogleFonts.poppins(
             color: Colors.white,
             fontSize: isMobile
@@ -156,12 +150,13 @@ class _HeroSectionState extends State<HeroSection>
                 ? 48
                 : 62,
             fontWeight: FontWeight.bold,
-            height: 1.1,
           ),
         ),
+
         const SizedBox(height: 8),
+
         Text(
-          "Apps Developer",
+          HeroStrings.title,
           style: GoogleFonts.poppins(
             color: Colors.blueAccent,
             fontSize: isMobile
@@ -170,15 +165,16 @@ class _HeroSectionState extends State<HeroSection>
                 ? 52
                 : 66,
             fontWeight: FontWeight.w800,
-            letterSpacing: 1.5,
           ),
         ),
+
         const SizedBox(height: 12),
 
         Text(
-          "I develop modern, scalable Flutter applications for mobile and web, following clean architecture principles, with robust state management and seamless user experiences",
+          HeroStrings.description,
           style: GoogleFonts.poppins(color: Colors.grey, fontSize: 16),
         ),
+
         const SizedBox(height: 40),
 
         Wrap(
@@ -187,25 +183,44 @@ class _HeroSectionState extends State<HeroSection>
           alignment: isMobile ? WrapAlignment.center : WrapAlignment.start,
           children: [
             _buildButton(
-              "View My Work",
+              HeroStrings.viewWork,
               Colors.blueAccent,
               isMobile,
-              click: () async {
-                widget.onMenuTap("Projects");
-              },
+              click: () => widget.onMenuTap("Projects"),
             ),
-
-            //https://drive.google.com/file/d/17c5KrbqtvnFzaWQ9QTpxq8X0nGL54kib/view?usp=sharing
             _buildButton(
-              "My resume",
+              HeroStrings.resume,
               Colors.transparent,
               isMobile,
               border: true,
-              click: () async {
-                await openCustomUrl(
-                  "https://drive.google.com/file/d/17c5KrbqtvnFzaWQ9QTpxq8X0nGL54kib/view?usp=sharing",
-                );
+              click: () => openCustomUrl(HeroStrings.resumeUrl),
+            ),
+          ],
+        ),
+        SizedBox(height: 12),
+
+        Row(
+          mainAxisAlignment:isMobile ? MainAxisAlignment.center:MainAxisAlignment.start,
+          children: [
+            _icon(AppImages.git, () async {
+              await openCustomUrl(ContactString.githubUrl);
+            }),
+            SizedBox(width: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: _icon(AppImages.linkdin, () async {
+                await openCustomUrl(ContactString.linkedinUrl);
+              }),
+            ),
+            SizedBox(width: 20),
+
+            _icon(
+              AppImages.email,
+              () async {
+                await openCustomUrl(ContactString.emailText);
               },
+              width: 50,
+              height: 50,
             ),
           ],
         ),
@@ -228,7 +243,7 @@ class _HeroSectionState extends State<HeroSection>
           duration: const Duration(milliseconds: 200),
           padding: EdgeInsets.symmetric(
             horizontal: isMobile ? 24 : 18,
-            vertical: isMobile ? 13 : 13,
+            vertical: 13,
           ),
           decoration: BoxDecoration(
             color: bgColor,
@@ -236,71 +251,37 @@ class _HeroSectionState extends State<HeroSection>
             border: border
                 ? Border.all(color: Colors.blueAccent, width: .6)
                 : null,
-            boxShadow: [
-              // Shadow for filled button (Got a project?)
-              // if (!border) ...[
-              //   BoxShadow(
-              //     color: Colors.blueAccent.withValues(alpha: 0.6),
-              //     blurRadius: 20,
-              //     spreadRadius: 2,
-              //     offset: const Offset(0, 8),
-              //   ),
-              //   BoxShadow(
-              //     color: Colors.black.withValues(alpha: 0.3),
-              //     blurRadius: 15,
-              //     offset: const Offset(0, 5),
-              //   ),
-              // ],
-              // Shadow for outline button (My resume)
-              // if (border) ...[
-              //   BoxShadow(
-              //     color: Colors.blueAccent.withValues(alpha: 0.4),
-              //     blurRadius: 15,
-              //     spreadRadius: 1,
-              //     offset: const Offset(0, 5),
-              //   ),
-              //   BoxShadow(
-              //     color: Colors.black.withValues(alpha: 0.2),
-              //     blurRadius: 10,
-              //     offset: const Offset(0, 3),
-              //   ),
-              // ],
-            ],
           ),
-          child: !border
-              ? Wrap(
+          child: border
+              ? Text(
+                  text,
+                  style: GoogleFonts.poppins(
+                    color: Colors.blueAccent,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       text,
                       style: GoogleFonts.poppins(
-                        color: border
-                            ? Colors.blueAccent
-                            : const Color(0xFF020817),
+                        color: const Color(0xFF020817),
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        letterSpacing: 0.8,
                       ),
                     ),
-                    SizedBox(width: 8),
-
-                    Icon(Icons.arrow_forward_outlined, size: 18),
+                    const SizedBox(width: 8),
+                    const Icon(Icons.arrow_forward_outlined, size: 18),
                   ],
-                )
-              : Text(
-                  text,
-                  style: GoogleFonts.poppins(
-                    color: border ? Colors.blueAccent : const Color(0xFF020817),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.8,
-                  ),
                 ),
         ),
       ),
     );
   }
 
-  Widget _rightImage(bool isMobile, bool isTablet, bool isDesktop) {
+  Widget _rightImage(bool isMobile, bool isTablet) {
     double containerSize = isMobile
         ? 280
         : isTablet
@@ -315,18 +296,11 @@ class _HeroSectionState extends State<HeroSection>
     return Container(
       height: containerSize,
       width: containerSize,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
-        gradient: const RadialGradient(
+        gradient: RadialGradient(
           colors: [Color(0xFF1E2A3A), Color(0xFF0E1621)],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.blueAccent.withValues(alpha: 0.2),
-            blurRadius: 40,
-            spreadRadius: 10,
-          ),
-        ],
       ),
       child: Center(
         child: ClipOval(
@@ -336,6 +310,26 @@ class _HeroSectionState extends State<HeroSection>
             height: imageSize,
             fit: BoxFit.cover,
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _icon(
+    String url,
+    VoidCallback action, {
+    double width = 36,
+    double height = 36,
+  }) {
+    return InkWell(
+      onTap: action,
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: Image.asset(
+          url,
+          fit: BoxFit.contain,
+          opacity: const AlwaysStoppedAnimation(.7),// ensures image scales correctly
         ),
       ),
     );

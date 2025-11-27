@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../global/widgets.dart';
+import '../../utils/app_string.dart';
 
 class AboutMeSection extends StatelessWidget {
   const AboutMeSection({super.key});
@@ -14,20 +14,22 @@ class AboutMeSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 24),
       child: Column(
         children: [
-          // Badge
+          // Section Badge
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 28.0),
-            child: CustomButton(text: 'About Me', onPressed: () {}),
+            padding: const EdgeInsets.symmetric(horizontal: 28),
+            child: CustomButton(
+              text: AboutMeStrings.sectionTitle,
+              onPressed: () {},
+            ),
           ),
 
-          const SizedBox(height: 40),
+          const SizedBox(height: 12),
 
           // Title
-          AnimatedSlide(
-            duration: const Duration(milliseconds: 800),
-            offset: const Offset(0, 0.3),
+          _animated(
+            delay: 0,
             child: Text(
-              'Who I Am',
+              AboutMeStrings.title,
               textAlign: TextAlign.center,
               style: GoogleFonts.poppins(
                 fontSize: 50,
@@ -41,14 +43,12 @@ class AboutMeSection extends StatelessWidget {
           const SizedBox(height: 24),
 
           // Description
-          AnimatedSlide(
-            duration: const Duration(milliseconds: 900),
-            offset: const Offset(0, 0.3),
+          _animated(
+            delay: 100,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Text(
-                "I'm a dedicated Flutter Developer specializing in building fast, beautiful, and scalable cross-platform mobile applications. "
-                "With a strong focus on clean architecture, performance optimization, and pixel-perfect UI, I develop apps that deliver smooth and modern user experiences.",
+                AboutMeStrings.description,
                 textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(
                   color: Colors.white70,
@@ -61,67 +61,73 @@ class AboutMeSection extends StatelessWidget {
 
           const SizedBox(height: 100),
 
-          // Responsive Content
+          // Features & Journey (Responsive)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 80.0),
+            padding: const EdgeInsets.symmetric(horizontal: 80),
             child: LayoutBuilder(
               builder: (context, constraints) {
-                final bool isMobile = constraints.maxWidth < 900;
+                final isMobile = constraints.maxWidth < 900;
 
                 return isMobile
                     ? Column(
-                        children: [
-                          _buildFeaturesColumn(),
-                          const SizedBox(height: 80),
-                          _buildJourneyCard(),
-                        ],
-                      )
+                  children: [
+                    _buildFeatures(),
+                    const SizedBox(height: 80),
+                    _buildJourneyCard(),
+                  ],
+                )
                     : Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(child: _buildFeaturesColumn()),
-                          const SizedBox(width: 100),
-                          Expanded(child: _buildJourneyCard()),
-                        ],
-                      );
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: _buildFeatures()),
+                    const SizedBox(width: 100),
+                    Expanded(child: _buildJourneyCard()),
+                  ],
+                );
               },
             ),
           ),
+
           const SizedBox(height: 80),
         ],
       ),
     );
   }
 
-  Widget _buildFeaturesColumn() {
+  // -------------------------
+  // FEATURES COLUMN
+  // -------------------------
+  Widget _buildFeatures() {
     return Column(
       children: [
         _featureItem(
           Icons.shield_rounded,
-          'Reliable & Secure',
-          'I build applications with security and reliability at their core, ensuring your data is protected.',
+          AboutMeStrings.feature1Title,
+          AboutMeStrings.feature1Desc,
         ),
         const SizedBox(height: 32),
         _featureItem(
           Icons.lightbulb_rounded,
-          'Innovative Solutions',
-          'I leverage cutting-edge technologies to create innovative solutions for complex problems.',
+          AboutMeStrings.feature2Title,
+          AboutMeStrings.feature2Desc,
         ),
         const SizedBox(height: 32),
         _featureItem(
           Icons.design_services_rounded,
-          'User-Focused Design',
-          'I prioritize user experience, creating intuitive interfaces that delight users.',
+          AboutMeStrings.feature3Title,
+          AboutMeStrings.feature3Desc,
         ),
       ],
     );
   }
 
+  // -------------------------
+  // FEATURE ITEM
+  // -------------------------
   Widget _featureItem(IconData icon, String title, String desc) {
-    return AnimatedSlide(
-      duration: const Duration(milliseconds: 700),
-      offset: const Offset(0, 0.3),
+    return _animated(
+      delay: 150,
       child: Row(
         children: [
           Container(
@@ -131,7 +137,7 @@ class AboutMeSection extends StatelessWidget {
               color: Colors.blueAccent,
               borderRadius: BorderRadius.circular(3),
             ),
-            child: Icon(icon, color: Color(0xFFFFFFFF), size: 28),
+            child: Icon(icon, color: Colors.white, size: 28),
           ),
           const SizedBox(width: 20),
           Expanded(
@@ -163,15 +169,17 @@ class AboutMeSection extends StatelessWidget {
     );
   }
 
+  // -------------------------
+  // JOURNEY CARD
+  // -------------------------
   Widget _buildJourneyCard() {
-    return AnimatedSlide(
-      duration: const Duration(milliseconds: 900),
-      offset: const Offset(0, 0.3),
+    return _animated(
+      delay: 200,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'My Journey',
+            AboutMeStrings.journeyTitle,
             style: GoogleFonts.poppins(
               color: Colors.white,
               fontSize: 30,
@@ -180,7 +188,7 @@ class AboutMeSection extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            "Passionate Flutter developer with 2.5+ years of experience building high-performance and scalable mobile applications. Skilled in GetX, BLoC, REST & GraphQL APIs, Firebase, CI/CD, and push notification systems (Firebase, Pushy, APNs). Experienced in full app lifecycle from UI design to publishing on Play Store and App Store.",
+            AboutMeStrings.journeyDesc,
             style: GoogleFonts.poppins(
               color: Colors.white70,
               fontSize: 14,
@@ -192,4 +200,17 @@ class AboutMeSection extends StatelessWidget {
       ),
     );
   }
+
+  // -------------------------
+  // REUSABLE ANIMATION
+  // -------------------------
+  Widget _animated({required Widget child, required int delay}) {
+    return AnimatedSlide(
+      offset: const Offset(0, 0.3),
+      duration: Duration(milliseconds: 700 + delay),
+      child: child,
+    );
+  }
 }
+
+
