@@ -40,6 +40,7 @@ class WorkExperienceSection extends StatelessWidget {
         bool isDesktop = width >= 1100;
 
         return Container(
+          color: Color(0xFF0C1317),
           padding: EdgeInsets.symmetric(
             vertical: 40,
             horizontal: isMobile ? 16 : isTablet ? 30 : 80,
@@ -102,7 +103,7 @@ class WorkExperienceSection extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(isMobile ? 18 : 24),
               decoration: BoxDecoration(
-                color: const Color(0xff0e1628),
+                color: const Color(0xFF0F191E),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.white10),
               ),

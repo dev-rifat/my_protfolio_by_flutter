@@ -15,7 +15,7 @@ class ProjectsSection extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        vertical: 70,
+        vertical: 40,
         horizontal: width < 500
             ? 16
             : width < 900
@@ -130,7 +130,7 @@ class ProjectsSection extends StatelessWidget {
 
     // ---------- NORMAL DESKTOP / LAPTOP (1280px – 1600px) ----------
     if (width >= 1500) return 0.95; // 16" laptops
-    if (width >= 1400) return 0.74; // 15" laptops
+    if (width >= 1400) return 0.75; // 15" laptops
     if (width >= 1300) return 0.62; // 14" laptops
 
     // ---------- 13" MACBOOK & MEDIUM LAPTOPS (1024px – 1299px) ----------

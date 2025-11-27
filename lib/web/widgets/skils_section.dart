@@ -39,13 +39,14 @@ class _SkillsSectionState extends State<SkillsSection> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF020817), Color(0xFF020817), Color(0xFF031847)],
-        ),
+        color: Color(0xFF020817)
+        // gradient: const LinearGradient(
+        //   begin: Alignment.topLeft,
+        //   end: Alignment.bottomRight,
+        //  // colors: [Color(0xFF020817), Color(0xFF020817), Color(0xFF031847)],
+        // ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,7 +57,6 @@ class _SkillsSectionState extends State<SkillsSection> {
             child: CustomButton(text: SkillsStrings.title, onPressed: () {}),
           ),
 
-          const SizedBox(height: 40),
 
           AnimatedOpacity(
             duration: const Duration(milliseconds: 1000),
